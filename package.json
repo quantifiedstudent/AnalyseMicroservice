@@ -1,0 +1,35 @@
+{
+  "name": "canvasdatamicroservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/app.ts",
+    "start:dev": "npx nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quantifiedstudent/CanvasDataMicroservice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quantifiedstudent/CanvasDataMicroservice/issues"
+  },
+  "homepage": "https://github.com/quantifiedstudent/CanvasDataMicroservice#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "@types/node-fetch": "^2.6.3",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.1"
+  },
+  "type": "module"
+}
