@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-import BaseCanvasAPIReciverService from "./BaseCanvasReciverService";
 import ICanvasDataAPIReciverService from "../../domain/interfaces/IAPIReciverServices/ICanvasDataAPIReciverService";
 import CourseDTO from "../dto/CourseDTO";
 import AssignmentDTO from "../dto/AssignmentDTO";
@@ -8,9 +7,7 @@ import SubmissionDTO from "../dto/SubmissionDTO";
 export default class CanvasDataAPIReciverService
   implements ICanvasDataAPIReciverService
 {
-  url: string = "http://localhost:7000";
-
-  constructor() {}
+  url: string = "http://localhost:7001";
 
   async GetStudentCanvasIdFromToken(): Promise<number> {
     const apiRoute = `/student/self`;
