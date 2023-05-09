@@ -14,19 +14,8 @@ export default class GraphCanvasWeatherHandler implements IGraphCanvasWeatherHan
 
     async GetGraphCanvasWeatherData(courseId: number, startDate: Date, endDate: Date): Promise<GraphCanvasWeather> {
       try {
-
         const dailyWeather = await this.weatherDataHandler.GetDailyWeather(startDate, endDate);
         const grades = await this.canvasDataHandler.GetAllGradedSubmissionFromCourse(courseId);
-
-        // for (let weather of dailyWeather)
-        // {
-        //     for(let grade in grades)
-        //     {
-        //         // submission is not an Array
-        //         // add grades and then loop thorugh them
-        //         if (weather.date === grade.sub)
-        //     }
-        // }
         return new GraphCanvasWeather(grades, dailyWeather);
       } catch (error) {
         let message;
