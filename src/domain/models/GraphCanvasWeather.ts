@@ -1,4 +1,3 @@
-import DailyWeatherDTO from "../../infrastructure/dto/DailyWeatherDTO";
 import { DailyWeather } from "./DailyWeather";
 import Submission from "./Submission";
 

@@ -1,6 +1,7 @@
 import express from "express";
 import GetPrivateToken from "./GettingToken";
 import routerCommandGraphCanvasWeather from "./application/commandHandlers/CommandGraphCanvasWeather"
+import routerCommandGraphCanvasCoursesSubmissions from "./application/commandHandlers/CommandGraphCanvasCoursesSubmissions"
 
 import CanvasDataHandler from "./application/domainEventsHandlers/CanvasDataHandler";
 import WeatherDataHandler from "./application/domainEventsHandlers/WeatherDataHandler";
@@ -37,7 +38,9 @@ app.get("/", async (req, res) => {
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 
-// Full route /graphCanvasWeather/course/:courseId/assignment/:assignmentId
+// Full route /graphCanvasWeather/course/:courseId?startDate={startDate}&endDate={endDate}
 app.use('/graphCanvasWeather', routerCommandGraphCanvasWeather);
+// Full route /graphCanvasCoursesSubmissions/course/:courseId
+app.use('/graphCanvasCoursesSubmissions', routerCommandGraphCanvasCoursesSubmissions);
 // app.use('/', routerCommandGraphCanvasSubmissions);
 // app.use('/', routerCommandCustomGraph);
