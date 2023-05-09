@@ -5,6 +5,8 @@ import Submission from "../../models/Submission";
 export default interface ICanvasDataHandler{
     GetStudentCanvasIdFromToken(): Promise<number>;
     GetStudnetCourses(): Promise<Course[]>;
-    GetCourseAssignments(courseId: number): Promise<Assignment[]>
-    GetAssignmentSubmission(assignmentId: number, courseId: number): Promise<Submission>;
+    GetAssignmentsFromCourse(courseId: number): Promise<Assignment[]>
+    GetSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission>;
+    GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission>;
+    GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]>;
 }

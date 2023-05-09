@@ -2,7 +2,7 @@ import IWeatherDataAPIReciverService from "../../domain/interfaces/IAPIReciverSe
 import IWeatherDataHandler from "../../domain/interfaces/IDomainEventHandlers/IWeatherDataHandler";
 import { DailyWeather } from "../../domain/models/DailyWeather";
 
-export class WeatherDataHandler implements IWeatherDataHandler {
+export default class WeatherDataHandler implements IWeatherDataHandler {
   weatherDataAPIReciverService: IWeatherDataAPIReciverService;
 
   constructor(weatherDataAPIReciverService: IWeatherDataAPIReciverService) {

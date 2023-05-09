@@ -1,10 +1,11 @@
+import express from "express";
 import GetPrivateToken from "./GettingToken";
-import { CanvasDataHandler } from "./application/domainEventsHandlers/CanvasDataHandler";
-import { WeatherDataHandler } from "./application/domainEventsHandlers/WeatherDataHandler";
+import routerCommandGraphCanvasWeather from "./application/commandHandlers/CommandGraphCanvasWeather"
+
+import CanvasDataHandler from "./application/domainEventsHandlers/CanvasDataHandler";
+import WeatherDataHandler from "./application/domainEventsHandlers/WeatherDataHandler";
 import CanvasDataAPIReciverService from "./infrastructure/recivers/CanvasDataAPIReciverService";
 import WeatherDataAPIReciverService from "./infrastructure/recivers/WeatherDataAPIReciverService";
-import ManualFetch from "./manualFetching";
-import express from "express";
 
 console.log("Hello world");
 // EXPRESS CONFIG
@@ -18,12 +19,12 @@ app.use(express.json());
 const token = GetPrivateToken();
 
 app.get("/", async (req, res) => {
-  const reciver = new WeatherDataAPIReciverService();
-  const handler = new WeatherDataHandler(reciver);
-  const courses = await handler.GetDailyWeather(new Date("2023-03-01"), new Date("2023-03-03"))
-  // const reciver = new CanvasDataAPIReciverService();
-  // const handler = new CanvasDataHandler(reciver);
-  // const courses = await handler.GetCourseAssignments(12886)
+  // const reciver = new WeatherDataAPIReciverService();
+  // const handler = new WeatherDataHandler(reciver);
+  // const courses = await handler.GetDailyWeather(new Date("2023-03-01"), new Date("2023-03-03"))
+  const reciver = new CanvasDataAPIReciverService();
+  const handler = new CanvasDataHandler(reciver);
+  const courses = await handler.GetGradedSubmissionFromAssignment(13086, 222334)
   res.status(200).send(courses);
 });
 
@@ -36,7 +37,7 @@ app.get("/", async (req, res) => {
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 
-
-// app.use('/', routerCommandGraphCanvasWeather);
+// Full route /graphCanvasWeather/course/:courseId/assignment/:assignmentId
+app.use('/graphCanvasWeather', routerCommandGraphCanvasWeather);
 // app.use('/', routerCommandGraphCanvasSubmissions);
 // app.use('/', routerCommandCustomGraph);

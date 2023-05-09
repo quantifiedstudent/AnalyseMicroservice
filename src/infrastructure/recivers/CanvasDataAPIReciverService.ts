@@ -7,7 +7,7 @@ import SubmissionDTO from "../dto/SubmissionDTO";
 export default class CanvasDataAPIReciverService
   implements ICanvasDataAPIReciverService
 {
-  url: string = "http://localhost:7001";
+  url: string = "http://localhost:7000";
 
   async GetStudentCanvasIdFromToken(): Promise<number> {
     const apiRoute = `/student/self`;
@@ -58,7 +58,7 @@ export default class CanvasDataAPIReciverService
     }
   }
 
-  async GetCourseAssignments(
+  async GetAssignmentsFromCourse(
     courseId: number,
     studentCanvasId: number
   ): Promise<AssignmentDTO[]> {
@@ -89,9 +89,9 @@ export default class CanvasDataAPIReciverService
       return Promise.reject(error);
     }
   }
-  async GetAssignmentSubmission(assignmentId: number, courseId: number, studentCanvasId: number): Promise<SubmissionDTO> {
-    const apiRoute = (courseId: number, studentCanvasId: number) =>
-      `/subbmision/course/${courseId.toString()}/student/${studentCanvasId.toString()}/assigment/${assignmentId.toString()}`;
+  async GetSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId: number): Promise<SubmissionDTO> {
+    const apiRoute = (courseId: number, assignmentId: number, studentCanvasId: number) =>
+      `/subbmision/course/${courseId.toString()}/student/${studentCanvasId.toString()}/assignment/${assignmentId.toString()}`;
 
     const options = {
       method: "GET",
@@ -99,7 +99,31 @@ export default class CanvasDataAPIReciverService
 
     try {
       const response = await fetch(
-        this.url + apiRoute(courseId, studentCanvasId),
+        this.url + apiRoute(courseId, assignmentId, studentCanvasId),
+        options
+      );
+      const submissionDTO = await response.json();
+      return <SubmissionDTO>submissionDTO;
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      // we'll proceed, but let's report it
+      console.error(message);
+      return Promise.reject(error);
+    }
+  }
+  async GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId: number): Promise<SubmissionDTO> {
+    const apiRoute = (courseId: number, assignmentId: number, studentCanvasId: number) =>
+      `/grade/submissionObject/course/${courseId.toString()}/assignment/${assignmentId.toString()}/student/${studentCanvasId.toString()}`;
+
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(
+        this.url + apiRoute(courseId, assignmentId, studentCanvasId),
         options
       );
       const submissionDTO = await response.json();

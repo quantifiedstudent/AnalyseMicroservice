@@ -4,7 +4,7 @@ import Assignment from "../../domain/models/Assignment";
 import Course from "../../domain/models/Course";
 import Submission from "../../domain/models/Submission";
 
-export class CanvasDataHandler implements ICanvasDataHandler {
+export default class CanvasDataHandler implements ICanvasDataHandler {
   canvasDataAPIReciverService: ICanvasDataAPIReciverService;
 
   constructor(canvasDataAPIReciverService: ICanvasDataAPIReciverService) {
@@ -46,12 +46,12 @@ export class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetCourseAssignments(courseId: number): Promise<Assignment[]> {
+  async GetAssignmentsFromCourse(courseId: number): Promise<Assignment[]> {
     try {
       const studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
       const assignmentsDTO =
-        await this.canvasDataAPIReciverService.GetCourseAssignments(
+        await this.canvasDataAPIReciverService.GetAssignmentsFromCourse(
           courseId,
           studentCanvasId
         );
@@ -70,18 +70,63 @@ export class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetAssignmentSubmission(assignmentId: number, courseId: number): Promise<Submission> {
+  async GetSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission> {
     try {
       const studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
-      const submissionsDTO =
-        await this.canvasDataAPIReciverService.GetAssignmentSubmission(
-          assignmentId,
+      const submissionDTO =
+        await this.canvasDataAPIReciverService.GetSubmissionFromAssignment(
           courseId,
+          assignmentId,
           studentCanvasId
         );
-      const submission = new Submission(submissionsDTO);
+      const submission = new Submission(submissionDTO);
       return submission;
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      // we'll proceed, but let's report it
+      console.error(message);
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+  async GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission> {
+    try {
+      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+
+      const submissionDTO =
+        await this.canvasDataAPIReciverService.GetGradedSubmissionFromAssignment(
+          courseId,
+          assignmentId,
+          studentCanvasId
+        );
+      const submission = new Submission(submissionDTO);
+      return submission;
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      // we'll proceed, but let's report it
+      console.error(message);
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+  async GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]> {
+    try {
+      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+
+      const assignments = await this.GetAssignmentsFromCourse(courseId);
+      const subbmisions: Submission[] = []
+
+      for (let assignment of assignments)
+      {
+        subbmisions.push(await this.GetGradedSubmissionFromAssignment(courseId, assignment.id));
+      }
+      return subbmisions;
+      
     } catch (error) {
       let message;
       if (error instanceof Error) message = error.message;

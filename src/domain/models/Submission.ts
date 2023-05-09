@@ -11,6 +11,7 @@ export default class Submission {
   grade: null;
   score: null;
   submitted_at: Date;
+  submittedAtString: string;
   assignment_id: number;
   user_id: number;
   submission_type: string;
@@ -43,6 +44,7 @@ export default class Submission {
     this.grade = dto.grade;
     this.score = dto.score;
     this.submitted_at = new Date(dto.submitted_at);
+    this.submittedAtString = new Date(dto.submitted_at).toISOString().split('T')[0]
     this.assignment_id = dto.assignment_id;
     this.user_id = dto.user_id;
     this.submission_type = dto.submission_type;
@@ -190,10 +192,7 @@ export class GradedCriteria {
     this.comments_html = data.comments_html;
     this.points = data.points;
     this.above_threshold = data.above_threshold;
-  }
-
-  setMaxPoints(maxPoints: number) {
-    this.maxPoints = maxPoints
+    this.maxPoints = data.maxPoints
   }
 }
 
