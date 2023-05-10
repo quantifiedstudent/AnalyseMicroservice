@@ -1,6 +1,6 @@
 import IWeatherDataAPIReciverService from "../../domain/interfaces/IAPIReciverServices/IWeatherDataAPIReciverService";
 import IWeatherDataHandler from "../../domain/interfaces/IDomainEventHandlers/IWeatherDataHandler";
-import { DailyWeather } from "../../domain/models/DailyWeather";
+import DailyWeather from "../../domain/models/DailyWeather";
 
 export default class WeatherDataHandler implements IWeatherDataHandler {
   weatherDataAPIReciverService: IWeatherDataAPIReciverService;
@@ -11,16 +11,14 @@ export default class WeatherDataHandler implements IWeatherDataHandler {
   async GetDailyWeather(
     startDate: Date,
     endDate: Date
-  ): Promise<DailyWeather[]> {
+  ): Promise<DailyWeather> {
     try {
       const dailyWeatherDTO =
         await this.weatherDataAPIReciverService.GetDailyWeather(
           startDate,
           endDate
         );
-      const dailyWeather = dailyWeatherDTO.map(
-        (dailyWeatherDTO) => new DailyWeather(dailyWeatherDTO)
-      );
+      const dailyWeather = new DailyWeather(dailyWeatherDTO);
       return dailyWeather;
     } catch (error) {
       let message;
