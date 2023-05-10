@@ -116,8 +116,6 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
   }
   async GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]> {
     try {
-      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
-
       const assignments = await this.GetAssignmentsFromCourse(courseId);
       const subbmisions: Submission[] = []
 

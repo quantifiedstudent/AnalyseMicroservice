@@ -1,5 +1,6 @@
 export default interface SubmissionDTO {
   id: number;
+  courseId: number;
   body: null;
   url: null;
   grade: null;
