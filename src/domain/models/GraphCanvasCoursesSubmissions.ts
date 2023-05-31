@@ -1,5 +1,5 @@
 import Course from "./Course";
-import { DailyWeather } from "./DailyWeather";
+import DailyWeather from "./DailyWeather";
 import Submission from "./Submission";
 
 export default class GraphCanvasCoursesSubmissions {

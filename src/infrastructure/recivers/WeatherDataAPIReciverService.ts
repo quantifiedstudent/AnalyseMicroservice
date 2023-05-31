@@ -6,7 +6,7 @@ export default class WeatherDataAPIReciverService implements IWeatherDataAPIReci
     url: string = "http://localhost:7001";
     parameters = (startDate: Date, endDate: Date) => `?startDate=${startDate.toISOString().split('T')[0]}&endDate=${endDate.toISOString().split('T')[0]}`;
   
-    async GetDailyWeather(startDate: Date, endDate: Date): Promise<DailyWeatherDTO[]> {
+    async GetDailyWeather(startDate: Date, endDate: Date): Promise<DailyWeatherDTO> {
       const apiRoute = `/dailyWeather`;
       const options = {
         method: "GET",
@@ -15,7 +15,7 @@ export default class WeatherDataAPIReciverService implements IWeatherDataAPIReci
       try {
         const response = await fetch(this.url + apiRoute + this.parameters(startDate, endDate), options);
         const data = await response.json();
-        return <DailyWeatherDTO[]>data;
+        return <DailyWeatherDTO>data;
       } catch (error) {
         let message;
         if (error instanceof Error) message = error.message;
