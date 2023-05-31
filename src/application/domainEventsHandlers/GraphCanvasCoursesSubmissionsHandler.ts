@@ -10,8 +10,12 @@ export default class GraphCanvasCoursesSubmissionsHandler implements IGraphCanva
 
     async GetGraphCanvasCoursesSubmissions(courseId: number): Promise<GraphCanvasCoursesSubmissions> {
       try {
+        const start = new Date().getTime();
         const courses = await this.canvasDataHandler.GetStudnetCourses();
+        console.log(`${(new Date().getTime() - start)/1000}s GetStudnetCourses`);
+        const start2 = new Date().getTime();
         const submissions = await this.canvasDataHandler.GetAllGradedSubmissionFromCourse(courseId);
+        console.log(`${(new Date().getTime() - start2)/1000}s GetAllGradedSubmissionFromCourse`);
         return new GraphCanvasCoursesSubmissions(submissions, courses);
       } catch (error) {
         let message;

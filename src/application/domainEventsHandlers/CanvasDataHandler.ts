@@ -23,9 +23,10 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetStudnetCourses(): Promise<Course[]> {
+  async GetStudnetCourses(studentCanvasId?: number): Promise<Course[]> {
     try {
-      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      if(studentCanvasId === undefined)
+        studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
       const coursesDTO =
         await this.canvasDataAPIReciverService.GetStudnetCourses(
@@ -46,9 +47,10 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetAssignmentsFromCourse(courseId: number): Promise<Assignment[]> {
+  async GetAssignmentsFromCourse(courseId: number, studentCanvasId?: number): Promise<Assignment[]> {
     try {
-      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      if(studentCanvasId === undefined)
+        studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
       const assignmentsDTO =
         await this.canvasDataAPIReciverService.GetAssignmentsFromCourse(
@@ -70,9 +72,10 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission> {
+  async GetSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId?: number): Promise<Submission> {
     try {
-      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      if(studentCanvasId === undefined)
+        studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
       const submissionDTO =
         await this.canvasDataAPIReciverService.GetSubmissionFromAssignment(
@@ -92,16 +95,21 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  async GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number): Promise<Submission> {
+  async GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId?: number): Promise<Submission> {
     try {
-      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      const start = new Date().getTime();
+      if(studentCanvasId === undefined)
+        studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      console.log(`${(new Date().getTime() - start)/1000}s GetStudentCanvasIdFromToken`);
 
+      const start2 = new Date().getTime();
       const submissionDTO =
         await this.canvasDataAPIReciverService.GetGradedSubmissionFromAssignment(
           courseId,
           assignmentId,
           studentCanvasId
         );
+      console.log(`${(new Date().getTime() - start2)/1000}s GetGradedSubmissionFromAssignment`);
       const submission = new Submission(submissionDTO);
       return submission;
     } catch (error) {
@@ -117,14 +125,18 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
   async GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]> {
     try {
       const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+      const start = new Date().getTime();
+      const assignments = await this.GetAssignmentsFromCourse(courseId, studentCanvasId);
+      console.log(`${(new Date().getTime() - start)/1000}s GetAssignmentsFromCourse`);
 
-      const assignments = await this.GetAssignmentsFromCourse(courseId);
       const subbmisions: Submission[] = []
 
+      const start2 = new Date().getTime();
       for (let assignment of assignments)
       {
-        subbmisions.push(await this.GetGradedSubmissionFromAssignment(courseId, assignment.id));
+        subbmisions.push(await this.GetGradedSubmissionFromAssignment(courseId, assignment.id, studentCanvasId));
       }
+      console.log(`${(new Date().getTime() - start2)/1000}s GetGradedSubmissionFromAssignment for all assignments`);
       return subbmisions;
       
     } catch (error) {
