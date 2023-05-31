@@ -8,4 +8,5 @@ export default interface ICanvasDataAPIReciverService{
     GetAssignmentsFromCourse(courseId: number, studentCanvasId: number): Promise<AssignmentDTO[]>;
     GetSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId: number): Promise<SubmissionDTO>;
     GetGradedSubmissionFromAssignment(courseId: number, assignmentId: number, studentCanvasId: number): Promise<SubmissionDTO>;
+    GetAllGradedSubmissionFromCourse(courseId: number, studentCanvasId: number): Promise<SubmissionDTO[]>;
 }

@@ -137,4 +137,28 @@ export default class CanvasDataAPIReciverService
       return Promise.reject(error);
     }
   }
+  async GetAllGradedSubmissionFromCourse(courseId: number, studentCanvasId: number): Promise<SubmissionDTO[]> {
+    const apiRoute = (courseId: number, studentCanvasId: number) =>
+      `/grade/submissionObjects/course/${courseId.toString()}/student/${studentCanvasId.toString()}`;
+
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(
+        this.url + apiRoute(courseId, studentCanvasId),
+        options
+      );
+      const submissionDTO = await response.json();
+      return <SubmissionDTO[]>submissionDTO;
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      // we'll proceed, but let's report it
+      console.error(message);
+      return Promise.reject(error);
+    }
+  }
 }
