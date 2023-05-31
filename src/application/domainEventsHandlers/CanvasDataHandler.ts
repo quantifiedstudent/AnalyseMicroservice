@@ -119,38 +119,12 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       return Promise.reject(error);
     }
   }
-  // // OLD
-  // async GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]> {
-  //   try {
-  //     const studentCanvasId = await this.GetStudentCanvasIdFromToken();
-  //     const assignments = await this.GetAssignmentsFromCourse(courseId, studentCanvasId);
-
-  //     const subbmisions: Submission[] = []
-
-  //     for (let assignment of assignments)
-  //     {
-  //       subbmisions.push(await this.GetGradedSubmissionFromAssignment(courseId, assignment.id, studentCanvasId));
-  //     }
-  //     return subbmisions;
-      
-  //   } catch (error) {
-  //     let message;
-  //     if (error instanceof Error) message = error.message;
-  //     else message = String(error);
-  //     // we'll proceed, but let's report it
-  //     console.error(message);
-  //     console.log(error);
-  //     return Promise.reject(error);
-  //   }
-  // }
   async GetAllGradedSubmissionFromCourse(courseId: number): Promise<Submission[]> {
     try {
       const studentCanvasId = await this.GetStudentCanvasIdFromToken();
 
-      const start2 = new Date().getTime();
       const subbmisionsDTO: SubmissionDTO[] = await this.canvasDataAPIReciverService.GetAllGradedSubmissionFromCourse(courseId, studentCanvasId);
       const subbmisions: Submission[] = [];
-      console.log(`${(new Date().getTime() - start2)/1000}s canvasDataAPIReciverService.GetAllGradedSubmissionFromCourse for all assignments`);
 
       for (let subbmisionDTO of subbmisionsDTO)
       {
