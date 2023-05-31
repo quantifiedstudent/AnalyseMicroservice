@@ -1,3 +1,5 @@
+import AssignmentDTO from "./AssignmentDTO";
+
 export default interface SubmissionDTO {
   id: number;
   courseId: number;
@@ -30,6 +32,7 @@ export default interface SubmissionDTO {
   preview_url: string;
   attachments: AttachmentDTO[];
   full_rubric_assessment?: FullRubricAssessmentDTO;
+  assignment?: AssignmentDTO;
 }
 
 export interface AttachmentDTO {
@@ -83,7 +86,7 @@ export interface GradedCriteriaDTO {
   comments_enabled: boolean;
   comments: string;
   comments_html?: string;
-  points?: number;
+  studentsPoints?: number;
   maxPoints?: number;
   above_threshold?: boolean;
 }

@@ -4,6 +4,7 @@ import SubmissionDTO, {
   GradedCriteriaDTO,
   RubricAssociationDTO,
 } from "../../infrastructure/dto/SubmissionDTO";
+import Assignment from "./Assignment";
 export default class Submission {
   id: number;
   courseId: number;
@@ -37,6 +38,7 @@ export default class Submission {
   preview_url: string;
   attachments: Attachment[];
   full_rubric_assessment?: FullRubricAssessment;
+  assignment?: Assignment;
 
   constructor(dto: SubmissionDTO) {
     this.id = dto.id;
@@ -81,6 +83,9 @@ export default class Submission {
     this.full_rubric_assessment = dto.full_rubric_assessment
       ? new FullRubricAssessment(dto.full_rubric_assessment)
       : undefined;
+    if (dto.assignment != undefined) {
+      this.assignment = new Assignment(dto.assignment)
+    }
   }
 }
 
@@ -147,7 +152,7 @@ export class GradedCriteria {
   description: string;
   comments: string;
   comments_html?: string;
-  points?: number;
+  studentsPoints?: number;
   maxPoints?: number;
   above_threshold?: boolean;
 
@@ -158,7 +163,7 @@ export class GradedCriteria {
     this.description = data.description;
     this.comments = data.comments;
     this.comments_html = data.comments_html;
-    this.points = data.points;
+    this.studentsPoints = data.studentsPoints;
     this.above_threshold = data.above_threshold;
     this.maxPoints = data.maxPoints
   }
