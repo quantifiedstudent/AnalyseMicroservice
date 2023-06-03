@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import routerCommandGraphCanvasWeather from "./application/commandHandlers/CommandGraphCanvasWeather"
 import routerCommandGraphCanvasCoursesSubmissions from "./application/commandHandlers/CommandGraphCanvasCoursesSubmissions"
 import CanvasDataHandler from "./application/domainEventsHandlers/CanvasDataHandler";
@@ -7,11 +8,15 @@ import CanvasDataAPIReciverService from "./infrastructure/recivers/CanvasDataAPI
 console.log("Hello world");
 // EXPRESS CONFIG
 const app = express();
+
+
 // const PORT:number = parseInt(process.env.PORT) || 8080;
 const PORT: number = 7003;
 
+app.use(cors());
 // Middleware that parses body to JSON format
 app.use(express.json());
+
 
 app.get("/", async (req, res) => {
   // const reciver = new WeatherDataAPIReciverService();
@@ -29,5 +34,5 @@ app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 app.use('/graphCanvasWeather', routerCommandGraphCanvasWeather);
 // Full route /graphCanvasCoursesSubmissions/course/:courseId
 app.use('/graphCanvasCoursesSubmissions', routerCommandGraphCanvasCoursesSubmissions);
-// 
+//
 // app.use('/', routerCommandCustomGraph);
