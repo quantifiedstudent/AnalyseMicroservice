@@ -2,6 +2,8 @@ import express from "express";
 import cors from 'cors';
 import routerCommandGraphCanvasWeather from "./application/commandHandlers/CommandGraphCanvasWeather"
 import routerCommandGraphCanvasCoursesSubmissions from "./application/commandHandlers/CommandGraphCanvasCoursesSubmissions"
+import routerCommandGraphSubmissionsWithWeather from "./application/commandHandlers/CommandGraphSubmissionsWithWeather"
+
 import CanvasDataHandler from "./application/domainEventsHandlers/CanvasDataHandler";
 import CanvasDataAPIReciverService from "./infrastructure/recivers/CanvasDataAPIReciverService";
 
@@ -34,5 +36,8 @@ app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 app.use('/graphCanvasWeather', routerCommandGraphCanvasWeather);
 // Full route /graphCanvasCoursesSubmissions/course/:courseId
 app.use('/graphCanvasCoursesSubmissions', routerCommandGraphCanvasCoursesSubmissions);
+
+app.use('/graphSubmissionsWithWeather', routerCommandGraphSubmissionsWithWeather);
+
 //
 // app.use('/', routerCommandCustomGraph);
