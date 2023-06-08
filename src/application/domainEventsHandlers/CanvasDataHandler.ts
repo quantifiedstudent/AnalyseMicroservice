@@ -3,6 +3,7 @@ import ICanvasDataHandler from "../../domain/interfaces/IDomainEventHandlers/ICa
 import Assignment from "../../domain/models/Assignment";
 import Course from "../../domain/models/Course";
 import Submission from "../../domain/models/Submission";
+import SubmissionInCourse from "../../domain/models/SubmissionInCourse";
 import SubmissionDTO from "../../infrastructure/dto/SubmissionDTO";
 
 export default class CanvasDataHandler implements ICanvasDataHandler {
@@ -129,6 +130,29 @@ export default class CanvasDataHandler implements ICanvasDataHandler {
       for (let subbmisionDTO of subbmisionsDTO)
       {
         subbmisions.push(new Submission(subbmisionDTO));
+      }
+      return subbmisions;
+      
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      // we'll proceed, but let's report it
+      console.error(message);
+      console.log(error);
+      return Promise.reject(error);
+    }
+  }
+  async GetAllGradedSubmissionFromOneCourse(courseId: number): Promise<SubmissionInCourse[]> {
+    try {
+      const studentCanvasId = await this.GetStudentCanvasIdFromToken();
+
+      const subbmisionsDTO: SubmissionDTO[] = await this.canvasDataAPIReciverService.GetAllGradedSubmissionFromCourse(courseId, studentCanvasId);
+      const subbmisions: SubmissionInCourse[] = [];
+
+      for (let subbmisionDTO of subbmisionsDTO)
+      {
+        subbmisions.push(new SubmissionInCourse(subbmisionDTO));
       }
       return subbmisions;
       
