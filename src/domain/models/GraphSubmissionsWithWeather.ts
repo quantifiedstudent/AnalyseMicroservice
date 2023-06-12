@@ -5,21 +5,21 @@ export type WeatherOfTheDay = {
     date: string;
     temperature: number;
 }
-export type SubmissionWithDate = {
-    iD: number;
+export type SubmissionScoreWithDate = {
     date: string;
+    score: number;
 }
 
 export default class GraphSubmissionsWithWeather {
 
-    submissions: SubmissionWithDate[];
+    submissions: SubmissionScoreWithDate[];
     temperature: WeatherOfTheDay[];
 
     constructor(canvasSubmissions: Submission[], dailyWeather: DailyWeather) {
         this.submissions = canvasSubmissions.map(val => ({
-            iD: val.assignment_id,
-            date: val.submittedAtString
-        } as SubmissionWithDate))
+            date: val.submittedAtString,
+            score: val.full_rubric_assessment?.score != null ? val.full_rubric_assessment?.score : 0
+        } as SubmissionScoreWithDate))
 
         this.temperature = []
 
