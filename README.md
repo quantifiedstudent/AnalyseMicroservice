@@ -1,4 +1,8 @@
 # Analyse Microservice
+## Setup Local Development Environment
+1. Install all dependencies using `npm i`
+2. Run the project with `npm run start:dev`
+
 ## Canvas Weather Graph Data
 > Returns bundled daily weather data and student submissions form selected course in the specified time span by course id.
 `http://localhost:{port}/graphCanvasWeather/course/:courseId?startDate={startDate}&endDate={endDate}` - API Route
