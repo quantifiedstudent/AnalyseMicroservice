@@ -4,6 +4,8 @@ import CanvasDataHandler from "../domainEventsHandlers/CanvasDataHandler";
 import WeatherDataAPIReciverService from "../../infrastructure/recivers/WeatherDataAPIReciverService";
 import WeatherDataHandler from "../domainEventsHandlers/WeatherDataHandler";
 import GraphSubmissionsWithWeather from "../../domain/models/GraphSubmissionsWithWeather";
+import GraphSubmissionsWithWeatherMaxPoints from "../../domain/models/GraphSubmissionsWithWeatherMaxPoints";
+
 
 export default class GraphSubmissionsWithWeatherHandler implements IGraphSubmissionsWithWeatherHandler {
 
@@ -17,6 +19,21 @@ export default class GraphSubmissionsWithWeatherHandler implements IGraphSubmiss
             const dailyWeather = await this.weatherDataHandler.GetDailyWeather(startDate, endDate);
             const grades = await this.canvasDataHandler.GetAllGradedSubmissionFromCourse(courseId);
             return new GraphSubmissionsWithWeather(grades, dailyWeather)
+        } catch (error) {
+            let message;
+            if (error instanceof Error) message = error.message;
+            else message = String(error);
+            // we'll proceed, but let's report it
+            console.error(message);
+            console.log(error);
+            return Promise.reject(error);
+        }
+    }
+    async GetGraphSubbmisonsAndWeatherDataMaxPoints(courseId: number, startDate: Date, endDate: Date): Promise<GraphSubmissionsWithWeatherMaxPoints> {
+        try {
+            const dailyWeather = await this.weatherDataHandler.GetDailyWeather(startDate, endDate);
+            const grades = await this.canvasDataHandler.GetAllGradedSubmissionFromCourse(courseId);
+            return new GraphSubmissionsWithWeatherMaxPoints(grades, dailyWeather)
         } catch (error) {
             let message;
             if (error instanceof Error) message = error.message;
